@@ -2,6 +2,7 @@
 
 from enum import Enum
 from typing import Dict, List, Optional
+from xhs.request.AsyncRequestFramework import AsyncRequestFramework
 
 
 class FeedType(Enum):
@@ -20,8 +21,9 @@ class FeedType(Enum):
 
 
 class Feeds:
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, arf: AsyncRequestFramework):
+        self.arf = arf
+        self._host = "https://edith.xiaohongshu.com"
 
     async def get_feed_categories(self) -> List[Dict]:
         """获取主页推荐分类
@@ -36,7 +38,8 @@ class Feeds:
     async def get_feed_content(self,
                                feed_type: FeedType,
                                cursor_score: str = "",
-                               num: int = 40) -> Dict:
+                               num: int = 40,
+                               page: int=0) -> Dict:
         """获取推荐内容
 
         Args:
@@ -52,7 +55,7 @@ class Feeds:
             "cursor_score": cursor_score,
             "num": num,
             "refresh_type": 1,
-            "note_index": 0,
+            "note_index": page*num,
             "unread_begin_note_id": "",
             "unread_end_note_id": "",
             "unread_note_count": 0,
@@ -61,7 +64,13 @@ class Feeds:
             "need_num": num,
             "image_scenes": ["FD_PRV_WEBP", "FD_WM_WEBP"]
         }
-        return await self.client.post(uri, data)
+        return await self.arf.send_http_request(
+            url=f"{self._host}{uri}",
+            uri=uri,
+            method="POST",
+            data=data,
+            auto_sign=True
+        )
 
     async def get_search_suggestions(self, keyword: str) -> List[str]:
         """获取搜索关键词建议
