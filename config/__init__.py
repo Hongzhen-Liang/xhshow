@@ -21,6 +21,8 @@ cookies = {
     "web_session": "040069b0be0c80122f7d7ede62354bd59a0c7b",
 }
 
+search_id =  "2e4z91gwil63ilr2g2e5c"
+
 url_list = {
     "profile_index_url": "https://www.xiaohongshu.com/user/profile/{}",
     "captcha_info_url": "https://edith.xiaohongshu.com/api/redcaptcha/v2/captcha/register",
