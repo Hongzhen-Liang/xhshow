@@ -195,9 +195,10 @@ class Notes:
             "keyword": keyword,
             "page": page,
             "page_size": page_size,
+            "search_id": search_id,
             "sort": sort,
             "note_type": note_type,
-            "search_id": search_id,
+            "ext_flags":[],
             "image_formats": [
                 "jpg",
                 "webp",
@@ -206,8 +207,10 @@ class Notes:
         }
         return await self.arf.send_http_request(
             url=f"{self._host}{uri}",
+            uri=uri,
             method="POST",
-            json=data,
+            data=data,
+            auto_sign=True
         )
 
     async def get_note_statistics(self,

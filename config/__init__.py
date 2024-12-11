@@ -1,25 +1,24 @@
 headers = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,'
-              'image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'zh,zh-CN;q=0.9',
     'cache-control': 'no-cache',
+    'content-type': 'application/json;charset=UTF-8',
     'origin': 'https://www.xiaohongshu.com',
     'pragma': 'no-cache',
     'priority': 'u=1, i',
     'referer': 'https://www.xiaohongshu.com/',
-    'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
+    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
     'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
+    'sec-ch-ua-platform': '"macOS"',
     'sec-fetch-dest': 'empty',
     'sec-fetch-mode': 'cors',
     'sec-fetch-site': 'same-site',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-}
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    }
 
 cookies = {
-    "a1": "",
-    "web_session": "",
+    "a1": "193ae221e47oq07k091c0ckcjzd1lei29taetba6s30000494421",
+    "web_session": "040069b0be0c80122f7d7ede62354bd59a0c7b",
 }
 
 url_list = {

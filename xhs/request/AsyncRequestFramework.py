@@ -8,6 +8,7 @@ from curl_cffi.requests import AsyncSession, Response
 from loguru import logger
 
 from encrypt import MiscEncrypt, XscEncrypt, XsEncrypt
+from config import cookies,headers
 
 
 class AsyncRequestFramework:
@@ -16,6 +17,8 @@ class AsyncRequestFramework:
     Args:
         verify_ssl (bool, optional): 是否验证 SSL 证书 默认为 True
     """
+    config_headers = headers
+    config_cookie = cookies
     def __init__(self, verify_ssl=True):
         self.verify_ssl = verify_ssl
 
@@ -61,12 +64,12 @@ class AsyncRequestFramework:
             case _:
                 xs = ""
 
-        xsc = await XscEncrypt.encrypt_xsc(xs=xs, xt=xt, platform=xsc_schemas.platform, a1=a1,
-                                           x1=xsc_schemas.x1, x4=xsc_schemas.x4)
+        # xsc = await XscEncrypt.encrypt_xsc(xs=xs, xt=xt, platform=xsc_schemas.platform, a1=a1,
+        #                                    x1=xsc_schemas.x1, x4=xsc_schemas.x4)
 
         session.headers.update({"x-s": xs})
         session.headers.update({"x-t": xt})
-        session.headers.update({"x-s-common": xsc})
+        # session.headers.update({"x-s-common": xsc})
 
         x_b3 = await MiscEncrypt.x_b3_traceid()
 
@@ -78,8 +81,8 @@ class AsyncRequestFramework:
         return session
 
     async def send_http_request(self, url, method='GET', xsc_schemas=None, uri: str = "", auto_sign: bool = False,
-                                params=None, data=None, headers=None, timeout=5, proxy=None, cookie=None, back_fun=False,
-                                max_retries=3, retry_delay=0.1, **kwargs):
+                                params=None, data=None, headers=config_headers, timeout=5, proxy=None, cookie=config_cookie, back_fun=False,
+                                max_retries=1, retry_delay=0.1, **kwargs):
         """发送 HTTP 请求
 
         Args:
@@ -107,7 +110,6 @@ class AsyncRequestFramework:
             headers = {}
         if proxy == {}:
             proxy = None
-
         if auto_sign:
             session = await self.__pre_headers(
                 uri=uri,
@@ -120,18 +122,18 @@ class AsyncRequestFramework:
             )
         else:
             session = AsyncSession()
-
+        session.headers.update(headers)
         method = method.upper()
         kwargs['stream'] = True
 
         for attempt in range(max_retries):
             try:
+                payload = "".join(json.dumps(data, ensure_ascii=False).split(" ")) 
                 response: Response = await session.request(
                     method=method,
                     url=url,
                     params=params,
-                    data=data,
-                    headers=headers,
+                    data=payload,
                     proxy=proxy,
                     timeout=timeout,
                     cookies=cookie,
